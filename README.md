@@ -5,7 +5,7 @@ Generate eurorack panels in OpenSCAD by @benjiaomodular.
 
 ## How to use
 
-#### Step 1: Copy the `EuroPanelMaker` directory into your project directory
+#### Step 1: Copy the `EuroPanelMaker` folder into your project directory
 ![Project dir](projectdir.png)
 
 #### Step 2: Include the `panel.scad` file into your project.
