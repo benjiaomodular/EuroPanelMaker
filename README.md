@@ -43,3 +43,8 @@ generatePanel();
 
 ## Features
 TODO: List of features
+
+## Examples
+You can use `template.scad` as a starting point for your project.
+
+I have included my own panels under `examples/benjiaomodular` for reference. Feel free to add a folder and submit a pull request if you'd like to include your own panels. 
