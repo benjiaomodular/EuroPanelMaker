@@ -39,5 +39,5 @@ jacks = [
     [15, 45, "", 180],
     [15, 25, "", 180]];
 
-panel_flipped = true;
+panel_flipped = false;
 generatePanel();

@@ -21,5 +21,5 @@ toggle_switches = [
     [2, 88, "Rate"],
 ];
 
-panel_flipped = true;
+panel_flipped = false;
 generatePanel();

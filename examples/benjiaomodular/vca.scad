@@ -15,5 +15,5 @@ jacks = [
     [3, 18, "Out"],
     [1, 35, "CV"]];
 
-panel_flipped = true;
+panel_flipped = false;
 generatePanel();
