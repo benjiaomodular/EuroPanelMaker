@@ -38,7 +38,7 @@ panel_flipped = false;
 
 #### Step 4: Call the generatePanel function
 ```
-generatePanel();erminal
+generatePanel();
 ```
 
 ## Features
