@@ -2,7 +2,7 @@ include <EuroPanelMaker/panel.scad>
 
 hp = 4;
 title = "VCA";
-text_depth = 1.6;
+margin = 0; // Add extra width on each side for support
 
 pots = [
     [2, 95, "CV AMT"]]; // x (in HP column), y (mm), label, rotation (degrees)

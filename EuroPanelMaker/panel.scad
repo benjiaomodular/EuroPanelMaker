@@ -12,7 +12,7 @@ component_depth = 1;
 text_depth = 1.4;
 
 rib_margin = 8;
-rib_thickness = 2.6;
+rib_thickness = 3;
     
 hp = 4;
 w = hp * eurorack_w;
@@ -20,6 +20,9 @@ c = w / 2;
 
 title = "Test";
 title_font_size = 4.5;
+title_x = w / 2;
+title_y = 118;
+title_rotate = 0;
 
 pots = [];
 leds = [];
@@ -38,6 +41,8 @@ panel_translate_x = (panel_flipped)? w:0;
 panel_translate_z = (panel_flipped)? panel_thickness:0;
 panel_rotate = (panel_flipped)? 180:0;
 
+margin = 0;
+
 module generatePanel(){
     $fn=100;
 
@@ -49,9 +54,12 @@ module generatePanel(){
     translate([panel_translate_x, 0, panel_translate_z]) rotate([0, panel_rotate, 0])
     difference(){
         union(){
-            cube([w, eurorack_h, panel_thickness]);
-            translate([0, rib_margin, -rib_thickness])
-                cube([w, eurorack_h-rib_margin*2, rib_thickness]);
+            translate([-margin, 0, 0]){
+                cube([w + margin * 2, eurorack_h, panel_thickness]);
+                translate([0, rib_margin, -rib_thickness]){
+                    cube([w + margin * 2, eurorack_h-rib_margin*2, rib_thickness]);
+                }
+            }
         }
         
         union(){
@@ -80,7 +88,7 @@ module generatePanel(){
 }
 
 module generate_title(){
-    translate([c, 118, panel_thickness-text_depth]) {
+    translate([title_x, title_y, panel_thickness-text_depth]) rotate([0, 0, title_rotate]) {
         linear_extrude(height=text_depth+1) {
             text(title,
                  font="Liberation Sans:style=bold",
