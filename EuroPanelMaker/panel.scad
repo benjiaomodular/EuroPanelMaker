@@ -14,12 +14,13 @@ text_depth = 1.4;
 rib_margin = 8;
 rib_thickness = 3;
     
-hp = 4;
+hp = 2;
 w = hp * eurorack_w;
 c = w / 2;
 
 title = "Test";
 title_font_size = 4.5;
+title_font = "Liberation Sans:style=bold";
 title_x = w / 2;
 title_y = 118;
 title_rotate = 0;
@@ -29,6 +30,7 @@ leds = [];
 jacks = [];
 toggle_switches = [];
 
+label_font = "Liberation Sans:style=bold";
 pot_label_distance = 10;
 pot_label_font_size = 3;
 jack_label_distance = 6;
@@ -91,7 +93,7 @@ module generate_title(){
     translate([title_x, title_y, panel_thickness-text_depth]) rotate([0, 0, title_rotate]) {
         linear_extrude(height=text_depth+1) {
             text(title,
-                 font="Liberation Sans:style=bold",
+                 font=title_font,
                  size=title_font_size,
                  halign="center");
         }
@@ -99,17 +101,41 @@ module generate_title(){
 }
 
 module generate_mounting_holes(){
+    
     if (hp == 1){
         translate([c, 3, 0]) cylinder(r=1.6, h=10, center=true);
         translate([c, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);
+    } else if (hp == 2){
+        hull(){
+            translate([c-1, 3, 0]) cylinder(r=1.6, h=10, center=true);
+            translate([c+1, 3, 0]) cylinder(r=1.6, h=10, center=true);
+        }
+        
+        hull(){
+            translate([c-1, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);
+            translate([c+1, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);
+        }
     } else {
-        translate([7.5, 3, 0]) cylinder(r=1.6, h=10, center=true);
-        translate([7.5, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);   
+        hull(){
+            translate([6, 3, 0]) cylinder(r=1.6, h=10, center=true);
+            translate([9, 3, 0]) cylinder(r=1.6, h=10, center=true);
+        }
+        
+        hull(){
+            translate([6, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true); 
+            translate([9, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);  
+        }
     }
     
     if (hp >= 10){
-        translate([w - 7.5, 3, 0]) cylinder(r=1.6, h=10, center=true);
-        translate([w - 7.5, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);
+        hull(){
+            translate([w - 6, 3, 0]) cylinder(r=1.6, h=10, center=true);
+            translate([w - 9, 3, 0]) cylinder(r=1.6, h=10, center=true);
+        }
+        hull(){
+            translate([w - 6, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);
+            translate([w - 9, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);
+        }
     } 
 }
 
@@ -123,7 +149,7 @@ module generate_pots(params=[2, 95, "Label"]){
     translate([eurorack_w * params[0], params[1]+pot_label_distance, panel_thickness-text_depth ]) {
         linear_extrude(height=text_depth+1) {
             text(params[2],
-                 font="Liberation Sans:style=bold",
+                 font=label_font,
                  size=pot_label_font_size,
                  halign="center");
         }
@@ -142,7 +168,7 @@ module generate_jacks(params=[2, 95, "Label"]){
     translate([eurorack_w * params[0], params[1]+jack_label_distance, panel_thickness-text_depth ]) {
         linear_extrude(height=text_depth+1) {
             text(params[2],
-                 font="Liberation Sans:style=bold",
+                 font=label_font,
                  size=pot_label_font_size,
                  halign="center");
         }
@@ -161,7 +187,7 @@ module generate_toggle_switch(params=[2, 95, "Label"]){
     translate([eurorack_w * params[0], params[1]+toggle_label_distance, panel_thickness-text_depth ]) {
         linear_extrude(height=text_depth+1) {
             text(params[2],
-                 font="Liberation Sans:style=bold",
+                 font=label_font,
                  size=pot_label_font_size,
                  halign="center");
         }

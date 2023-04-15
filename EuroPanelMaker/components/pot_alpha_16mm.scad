@@ -14,7 +14,7 @@ module pot_alpha_16mm(){
         
         body_height = 10;
         
-        translate([-7.5, -14, -body_height]) cube([15, 14, body_height]);
+        translate([-8, -14, -body_height]) cube([16, 14, body_height]);
         translate([0, 0, -body_height/2]){
             cylinder(r=9.5 + tolerance, h=body_height, center=true);
         }      
