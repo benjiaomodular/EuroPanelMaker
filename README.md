@@ -1,5 +1,6 @@
 # EuroPanelMaker
 Eurorack panel generator for OpenSCAD by [@benjiaomodular](https://www.instagram.com/benjiaomodular/).
+This project was sponsored by [PCBWay](https://pcbway.com)!
 
 ![Template preview](preview.png)
 

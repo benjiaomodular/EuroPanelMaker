@@ -2,19 +2,18 @@ include <../../EuroPanelMaker/panel.scad>
 
 hp = 4;
 title = "NOISE";
-text_depth = 1.6;
-title_rotate = -90;
+text_depth = 1.4;
+title_font_size = 4;
+margin = 3;
 
-pots = [
-    [2, 95, "CV AMT"]];
+pots = [[2, 95, "Level"]];
 
-leds = [
-    [3, 35]];
+leds = [];
 
 jacks = [
-    [1, 18, "In"],
-    [3, 18, "Out"],
-    [1, 35, "CV"]];
+    [2, 60, "White"],
+    [2, 40, "Pink"],
+    [2, 20, "Blue"]];
 
 panel_flipped = false;
 generatePanel();

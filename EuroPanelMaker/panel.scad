@@ -29,6 +29,9 @@ pots = [];
 leds = [];
 jacks = [];
 toggle_switches = [];
+labels = [
+    [1, 20, "CLK"]
+];
 
 label_font = "Liberation Sans:style=bold";
 pot_label_distance = 10;
@@ -84,6 +87,11 @@ module generatePanel(){
             for (idx = [0 : len(toggle_switches)] ) {
                 if (toggle_switches[idx]) generate_toggle_switch(toggle_switches[idx]);
             }
+            
+            for (idx = [0 : len(labels)] ) {
+                echo("LABEL:", idx=labels[idx]);
+                if (labels[idx]) generate_extra_labels(labels[idx]);
+            }
         }
     }
 
@@ -137,6 +145,17 @@ module generate_mounting_holes(){
             translate([w - 9, eurorack_h-3, 0]) cylinder(r=1.6, h=10, center=true);
         }
     } 
+}
+
+module generate_extra_labels(params=[2, 95, "Label"]){
+    translate([eurorack_w * params[0], params[1], panel_thickness-text_depth ]) {
+        linear_extrude(height=text_depth+1) {
+            text(params[2],
+                 font=label_font,
+                 size=pot_label_font_size,
+                 halign="center");
+        }
+    }
 }
 
 module generate_pots(params=[2, 95, "Label"]){
