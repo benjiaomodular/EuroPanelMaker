@@ -30,7 +30,6 @@ leds = [];
 jacks = [];
 toggle_switches = [];
 labels = [
-    [1, 20, "CLK"]
 ];
 
 label_font = "Liberation Sans:style=bold";
@@ -108,7 +107,7 @@ module generate_title(){
     }    
 }
 
-module generate_mounting_holes(){
+module generate_mounting_(){
     
     if (hp == 1){
         translate([c, 3, 0]) cylinder(r=1.6, h=10, center=true);
@@ -188,7 +187,7 @@ module generate_jacks(params=[2, 95, "Label"]){
         linear_extrude(height=text_depth+1) {
             text(params[2],
                  font=label_font,
-                 size=pot_label_font_size,
+                 size=jack_label_font_size,
                  halign="center");
         }
     }
