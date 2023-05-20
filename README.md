@@ -5,7 +5,7 @@ Eurorack panel generator for OpenSCAD by [@benjiaomodular](https://www.instagram
 
 I talked about how and why I developed this library on my Youtube channel. Sponsored by [PCBWay](https://pcbway.com)!
 
-[![Watch the video](https://img.youtube.com/vi/8PgxXPMlfh4/default.jpg)](https://youtu.be/8PgxXPMlfh4)
+[![Watch the video](https://img.youtube.com/vi/8PgxXPMlfh4/0.jpg)](https://youtu.be/8PgxXPMlfh4)
 
 ## How to use
 
