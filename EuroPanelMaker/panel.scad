@@ -29,8 +29,7 @@ pots = [];
 leds = [];
 jacks = [];
 toggle_switches = [];
-labels = [
-];
+labels = [];
 
 label_font = "Liberation Sans:style=bold";
 pot_label_distance = 10;
@@ -107,7 +106,7 @@ module generate_title(){
     }    
 }
 
-module generate_mounting_(){
+module generate_mounting_holes(){
     
     if (hp == 1){
         translate([c, 3, 0]) cylinder(r=1.6, h=10, center=true);
