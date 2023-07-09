@@ -1,4 +1,4 @@
-use <components/jack_35mm.scad>
+;use <components/jack_35mm.scad>
 use <components/led_3mm.scad>
 use <components/pot_alpha_16mm.scad>
 use <components/mounting_tab.scad>
@@ -14,7 +14,7 @@ text_depth = 1.4;
 rib_margin = 8;
 rib_thickness = 3;
     
-hp = 2;
+hp = 6;
 w = hp * eurorack_w;
 c = w / 2;
 
@@ -30,8 +30,10 @@ leds = [];
 jacks = [];
 toggle_switches = [];
 labels = [];
+rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
 
 label_font = "Liberation Sans:style=bold";
+label_font_size = 3;
 pot_label_distance = 10;
 pot_label_font_size = 3;
 jack_label_distance = 6;
@@ -90,11 +92,27 @@ module generatePanel(){
                 echo("LABEL:", idx=labels[idx]);
                 if (labels[idx]) generate_extra_labels(labels[idx]);
             }
+            
+            for (idx = [0 : len(rectangular_holes)] ) {
+                echo("LABEL:", idx=rectangular_holes[idx]);
+                if (rectangular_holes[idx]) generate_rectangular_holes(rectangular_holes[idx]);
+            }
         }
     }
 
 }
 
+
+module generate_rectangular_holes(params=[3, 100, 25, 20, 30, 30]){
+    translate([eurorack_w * params[0], params[1], 0 ]) {
+        #cube([params[2], params[3], panel_thickness*2], center=true);
+        
+        translate([0, 0, -panel_thickness]){
+            #cube([params[4], params[5], panel_thickness], center=true);
+        }      
+    }
+}
+    
 module generate_title(){
     translate([title_x, title_y, panel_thickness-text_depth]) rotate([0, 0, title_rotate]) {
         linear_extrude(height=text_depth+1) {
@@ -106,7 +124,7 @@ module generate_title(){
     }    
 }
 
-module generate_mounting_holes(){
+module generate_mounting_holes(params=[2, 95, "Label"]){
     
     if (hp == 1){
         translate([c, 3, 0]) cylinder(r=1.6, h=10, center=true);
@@ -147,12 +165,26 @@ module generate_mounting_holes(){
 
 module generate_extra_labels(params=[2, 95, "Label"]){
     translate([eurorack_w * params[0], params[1], panel_thickness-text_depth ]) {
-        linear_extrude(height=text_depth+1) {
-            text(params[2],
-                 font=label_font,
-                 size=pot_label_font_size,
-                 halign="center");
+        
+        
+        if (params[3]) {
+            rotate([0,0,params[3]])
+                linear_extrude(height=text_depth+1) {
+                    text(params[2],
+                         font=label_font,
+                         size=label_font_size,
+                         halign="center");
+                }
+        } else {
+            linear_extrude(height=text_depth+1) {
+                text(params[2],
+                     font=label_font,
+                     size=label_font_size,
+                     halign="center");
+            }
         }
+        
+
     }
 }
 
