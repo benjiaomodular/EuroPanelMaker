@@ -151,7 +151,7 @@ module generate_mounting_holes(params=[2, 95, "Label"]){
         }
     }
     
-    if (hp >= 10){
+    if (hp >= 5){
         hull(){
             translate([w - 6, 3, 0]) cylinder(r=1.6, h=10, center=true);
             translate([w - 9, 3, 0]) cylinder(r=1.6, h=10, center=true);
