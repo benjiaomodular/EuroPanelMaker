@@ -34,11 +34,11 @@ rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
 
 label_font = "Liberation Sans:style=bold";
 label_font_size = 3;
-pot_label_distance = 10;
+pot_label_distance = 12;
 pot_label_font_size = 3;
-jack_label_distance = 6;
+jack_label_distance = 8;
 jack_label_font_size = 3;
-toggle_label_distance = 6;
+toggle_label_distance = 8;
 
 // Flip panel for 3D printing
 panel_flipped = false;
@@ -200,7 +200,8 @@ module generate_pots(params=[2, 95, "Label"]){
             text(params[2],
                  font=label_font,
                  size=pot_label_font_size,
-                 halign="center");
+                 halign="center",
+                 valign="center");
         }
     }
 }
@@ -219,14 +220,15 @@ module generate_jacks(params=[2, 95, "Label"]){
             text(params[2],
                  font=label_font,
                  size=jack_label_font_size,
-                 halign="center");
+                 halign="center",
+                 valign="center");
         }
     }
 }
 
-module generate_toggle_switch(params=[2, 95, "Label"]){
+module generate_toggle_switch(params=[2, 95, "Label", ""]){
     translate([eurorack_w * params[0], params[1], component_depth])
-        if (params[3]) {
+        if (params[4]) {
             rotate([0,0,params[3]]) #toggle_switch();
         } else {
             #toggle_switch();
@@ -238,7 +240,18 @@ module generate_toggle_switch(params=[2, 95, "Label"]){
             text(params[2],
                  font=label_font,
                  size=pot_label_font_size,
-                 halign="center");
+                 halign="center",
+                 valign="center");
+        }
+    }
+    
+    translate([eurorack_w * params[0], params[1]-toggle_label_distance, panel_thickness-text_depth ]) {
+        linear_extrude(height=text_depth+1) {
+            text(params[3],
+                 font=label_font,
+                 size=pot_label_font_size,
+                 halign="center",
+                 valign="center");
         }
     }
 }
