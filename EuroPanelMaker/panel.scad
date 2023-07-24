@@ -39,6 +39,7 @@ pot_label_font_size = 3;
 jack_label_distance = 8;
 jack_label_font_size = 3;
 toggle_label_distance = 8;
+toggle_label_font_size = 3;
 
 // Flip panel for 3D printing
 panel_flipped = false;
@@ -239,7 +240,7 @@ module generate_toggle_switch(params=[2, 95, "Label", ""]){
         linear_extrude(height=text_depth+1) {
             text(params[2],
                  font=label_font,
-                 size=pot_label_font_size,
+                 size=toggle_label_font_size,
                  halign="center",
                  valign="center");
         }
@@ -249,7 +250,7 @@ module generate_toggle_switch(params=[2, 95, "Label", ""]){
         linear_extrude(height=text_depth+1) {
             text(params[3],
                  font=label_font,
-                 size=pot_label_font_size,
+                 size=toggle_label_font_size,
                  halign="center",
                  valign="center");
         }
