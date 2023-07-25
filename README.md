@@ -63,3 +63,17 @@ I have included my own panels under `examples/benjiaomodular` for reference. Fee
 | squares | [squares.scad](examples/benjiaomodular/squares.scad) | ![Squares Preview](examples/benjiaomodular/squares.png)|
 | vca | [vca.scad](examples/benjiaomodular/vca.scad) | ![VCA Preview](examples/benjiaomodular/vca.png)|
 | wavefolder | [wavefolder.scad](examples/benjiaomodular/wavefolder.scad) | ![Wavefolder Preview](examples/benjiaomodular/wavefolder.png)|
+
+
+# CONTRIBUTING
+
+## Visual Tests
+A script is available to verify that features of the library are functional. Running `./tests.sh` will generate a set of example panels which will be displayed for visual inspection (tested only on Linux).
+
+A similar image will be displayed:
+
+![docs/example-out.png](docs/example-out.png)
+
+Look out for misaligned or suspicious renderings. Individual SCAD files are available under `tests/` for further investigation.
+
+NOTE: This will probably be a temporary solution until a more automate testing process is available.
