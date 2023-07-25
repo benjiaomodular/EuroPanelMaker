@@ -9,9 +9,9 @@ pots = []; // x (in HP column), y (mm), label, rotation (degrees)
 leds = []; // x (in HP column), y (mm), diameter (mm)
 jacks = []; // x (in HP column), y (mm), label, rotation (degrees)
 toggle_switches = [
-    [3, 100, ""],
-    [3, 70, "LABEL A"],
-    [3, 30, "LABEL A", "LABEL B"],
+    [3, 100, "0"],
+    [3, 60, "90", 90],
+    [3, 20, "180", 180],
 ];
-panel_flipped = false;
+panel_flipped = true;
 generatePanel();
