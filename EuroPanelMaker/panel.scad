@@ -38,7 +38,7 @@ pot_label_distance = 12;
 pot_label_font_size = 3;
 jack_label_distance = 8;
 jack_label_font_size = 3;
-toggle_label_distance = 8;
+toggle_label_distance = 12;
 toggle_label_font_size = 3;
 
 // Flip panel for 3D printing
