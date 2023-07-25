@@ -9,44 +9,79 @@ I talked about how and why I developed this library on my Youtube channel. Spons
 
 ## How to use
 
-#### Step 1: Copy the `EuroPanelMaker` folder into your project directory
+### Installing
+
+Copy the `EuroPanelMaker` folder into your project directory.
+
 ![Project dir](projectdir.png)
 
-#### Step 2: Include the `panel.scad` file into your project.
+### Importing
+
+Include the `panel.scad` file into your project.
 ```
 include <EuroPanelMaker/panel.scad>
 ```
 
-#### Step 3: Define variables
+### Basic Usage
+
+First, define the mandatory variables.
 ```
 hp = 4;
 title = "VCA";
-text_depth = 1.6;
-
-// x (in HP column), y (mm), label, rotation (degrees)
-pots = [
-    [2, 95, "CV AMT"]]; 
-
-// x (in HP column), y (mm), diameter (mm)
-leds = [
-    [3, 35, 3]]; 
-    
-// x (in HP column), y (mm), label, rotation (degrees)
-jacks = [
-    [1, 18, "In"] ,
-    [3, 18, "Out"],
-    [1, 35, "CV"]]; 
-
-panel_flipped = false;
 ```
 
-#### Step 4: Call the generatePanel function
+Then, define any potentiometers, jacks, switches, and LEDs you need.
+```
+pots = [
+    [x (in HP column), y (mm), label, rotation (degrees)]
+];
+
+jacks = [
+    [x (in HP column), y (mm), label, rotation (degrees)]
+];
+
+switches = [
+    [x (in HP column), y (mm), label above, label below, rotation (degrees)]
+];
+
+leds = [
+    [x (in HP column), y (mm), diameter (mm)]
+];
+```
+Add as many components as necessary in each array. *Note: the rotation parameter can be omitted for no rotation.*
+
+Finally, generate the panel.
 ```
 generatePanel();
 ```
+The panel can also be flipped to be exported for printing.
+```
+panel_flipped = true;
+```
 
-## Features
-TODO: List of features
+### Advanced Usage
+A number of variables can be altered. Here is a list with their default values:
+```
+margin = 0;
+text_depth = 1.4;
+title_font_size = 4.5;
+title_font = "Liberation Sans:style=bold";
+label_font = "Liberation Sans:style=bold";
+label_font_size = 3;
+pot_label_distance = 12;
+pot_label_font_size = 3;
+jack_label_distance = 8;
+jack_label_font_size = 3;
+toggle_label_distance = 12;
+toggle_label_font_size = 3;
+```
+
+Additionally, extra labels can be added to the panel.
+```
+labels = [
+    [x (in HP column), y (mm), label, rotation (degrees)]
+];
+```
 
 ## Examples
 You can use `template.scad` as a starting point for your project.
