@@ -17,4 +17,4 @@ module toggle_switch(){
 
 }
 
-pot_alpha_16mm();
+toggle_switch();
