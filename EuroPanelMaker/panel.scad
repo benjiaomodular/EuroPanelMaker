@@ -244,7 +244,7 @@ module generate_switches(params=[2, 95, "Label", ""]){
     
     translate([eurorack_w * params[0], params[1] - switch_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
-    text(params[2], font = label_font, size = switch_label_font_size, halign = "center", valign = "center");
+    text(params[3], font = label_font, size = switch_label_font_size, halign = "center", valign = "center");
 }
 
 
