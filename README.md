@@ -100,9 +100,13 @@ I have included my own panels under `examples/benjiaomodular` for reference. Fee
 | wavefolder | [wavefolder.scad](examples/benjiaomodular/wavefolder.scad) | ![Wavefolder Preview](examples/benjiaomodular/wavefolder.png)|
 
 
-# CONTRIBUTING
+## Contributing
 
-## Visual Tests
+Some helpful tips for contributing to the EuroPanelMaker library. 
+
+TODO: Add guidelines.
+
+### Visual Tests
 A script is available to verify that features of the library are functional. Running `./tests.sh` will generate a set of example panels which will be displayed for visual inspection (tested only on Linux).
 
 A similar image will be displayed:
