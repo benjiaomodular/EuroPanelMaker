@@ -1,4 +1,5 @@
 use <components/jack_35mm.scad>
+use <components/jack_14in.scad>
 use <components/led.scad>
 use <components/pot_alpha_16mm.scad>
 use <components/mounting_tab.scad>
@@ -38,6 +39,8 @@ pot_label_distance = 12;
 pot_label_font_size = 3;
 jack_label_distance = 8;
 jack_label_font_size = 3;
+jack_14in_label_distance = 12;
+jack_14in_label_font_size = 3;
 switch_label_distance = 12;
 switch_label_font_size = 3;
 
@@ -211,13 +214,23 @@ module generate_pots(params=[2, 95, "Label"]) {
 }
 
 module generate_jacks(params=[2, 95, "Label"]){
-    translate([eurorack_w * params[0], params[1], component_depth])
-    rotate([0, 0, params[3] ? params[3] : 0])
-    #jack_35mm();
+    if (!params[3] || params[3] == "35mm") {
+        translate([eurorack_w * params[0], params[1], component_depth])
+        rotate([0, 0, params[4] ? params[4] : 0])
+        #jack_35mm();
 
-    translate([eurorack_w * params[0], params[1] + jack_label_distance, panel_thickness - text_depth])
-    linear_extrude(height = text_depth + 1)
-    text(params[2], font = label_font, size = jack_label_font_size, halign = "center", valign = "center");
+        translate([eurorack_w * params[0], params[1] + jack_label_distance, panel_thickness - text_depth])
+        linear_extrude(height = text_depth + 1)
+        text(params[2], font = label_font, size = jack_label_font_size, halign = "center", valign = "center");
+    } else if (params[3] == "14in") {
+        translate([eurorack_w * params[0], params[1], component_depth])
+        rotate([0, 0, params[4] ? params[4] : 0])
+        #jack_14in();
+
+        translate([eurorack_w * params[0], params[1] + jack_14in_label_distance, panel_thickness - text_depth])
+        linear_extrude(height = text_depth + 1)
+        text(params[2], font = label_font, size = jack_14in_label_font_size, halign = "center", valign = "center");
+    }
 }
 
 module generate_switches(params=[2, 95, "Label", ""]){
