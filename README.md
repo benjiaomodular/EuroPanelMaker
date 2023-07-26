@@ -37,7 +37,7 @@ pots = [
 ];
 
 jacks = [
-    [x (in HP column), y (mm), label, rotation (degrees)]
+    [x (in HP column), y (mm), label, size, rotation (degrees)]
 ];
 
 switches = [
@@ -48,7 +48,11 @@ leds = [
     [x (in HP column), y (mm), diameter (mm)]
 ];
 ```
-Add as many components as necessary in each array. *Note: the rotation parameter can be omitted for no rotation.*
+Add as many components as necessary in each array. Some notes:
+
+- The rotation parameter on any component can be omitted for no rotation
+- The options for jack size is `"35mm"` (for 3.5mm) or `"14in"` (for 1/4 inch) - if omitted, then it will be 3.5mm
+- The label below parameter for a switch can be omitted for no label below the switch
 
 Finally, generate the panel.
 ```

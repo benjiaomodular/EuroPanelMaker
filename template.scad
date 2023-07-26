@@ -28,7 +28,7 @@ leds = [ // x (in HP column), y (mm), diameter (mm)
     [3, 35, 3]
 ];
 
-jacks = [ // x (in HP column), y (mm), label, rotation (degrees)
+jacks = [ // x (in HP column), y (mm), label, size, rotation (degrees)
     [1, 18, "In"] ,
     [3, 18, "Out"],
     [1, 35, "CV"]
