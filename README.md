@@ -87,6 +87,8 @@ labels = [
 ];
 ```
 
+Each component also has an alternative form where the x-coordinate can be defined by millimeters as opposed to HP. This can be accomplished by adding `_mm` to the end of the component name.
+
 ## Examples
 You can use `template.scad` as a starting point for your project.
 

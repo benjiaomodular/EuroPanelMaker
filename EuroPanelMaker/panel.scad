@@ -31,6 +31,11 @@ leds = [];
 jacks = [];
 switches = [];
 labels = [];
+pots_mm = [];
+leds_mm = [];
+jacks_mm = [];
+switches_mm = [];
+labels_mm = [];
 rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
 
 label_font = "Liberation Sans:style=bold";
@@ -77,35 +82,70 @@ module generatePanel() {
             for (idx = [0 : len(pots)]) {
                 if (pots[idx]) {
                     echo("POT:", idx = pots[idx]);
-                    generate_pots(pots[idx]);
+                    generate_pots(pots[idx], eurorack_w * pots[idx][0]);
+                }
+            }
+
+            for (idx = [0 : len(pots_mm)]) {
+                if (pots_mm[idx]) {
+                    echo("POT:", idx = pots_mm[idx]);
+                    generate_pots(pots_mm[idx], pots_mm[idx][0]);
                 }
             }
             
             for (idx = [0 : len(leds)]) {
                 if (leds[idx]) {
                     echo("LED:", idx = leds[idx]);
-                    generate_leds(leds[idx]);
+                    generate_leds(leds[idx], eurorack_w * leds[idx][0]);
+                }
+            }
+
+            for (idx = [0 : len(leds_mm)]) {
+                if (leds_mm[idx]) {
+                    echo("LED:", idx = leds_mm[idx]);
+                    generate_leds(leds_mm[idx], leds_mm[idx][0]);
                 }
             }
             
             for (idx = [0 : len(jacks)]) {
                 if (jacks[idx]) {
                     echo("JACK:", idx = jacks[idx]);
-                    generate_jacks(jacks[idx]);
+                    generate_jacks(jacks[idx], eurorack_w * jacks[idx][0]);
+                }
+            }
+
+            for (idx = [0 : len(jacks_mm)]) {
+                if (jacks_mm[idx]) {
+                    echo("JACK:", idx = jacks_mm[idx]);
+                    generate_jacks(jacks_mm[idx], jacks_mm[idx][0]);
                 }
             }
             
             for (idx = [0 : len(switches)]) {
                 if (switches[idx]) {
                     echo("SWITCH:", idx = switches[idx]);
-                    generate_switches(switches[idx]);
+                    generate_switches(switches[idx], eurorack_w * switches[idx][0]);
+                }
+            }
+
+            for (idx = [0 : len(switches_mm)]) {
+                if (switches_mm[idx]) {
+                    echo("SWITCH:", idx = switches_mm[idx]);
+                    generate_switches(switches_mm[idx], switches_mm[idx][0]);
                 }
             }
             
             for (idx = [0 : len(labels)]) {
                 if (labels[idx]) {
                     echo("LABEL:", idx = labels[idx]);
-                    generate_extra_labels(labels[idx]);
+                    generate_extra_labels(labels[idx], eurorack_w * labels[idx][0]);
+                }
+            }
+
+            for (idx = [0 : len(labels_mm)]) {
+                if (labels_mm[idx]) {
+                    echo("LABEL:", idx = labels_mm[idx]);
+                    generate_extra_labels(labels_mm[idx], labels_mm[idx][0]);
                 }
             }
             
@@ -196,60 +236,60 @@ module generate_mounting_holes(params=[2, 95, "Label"]) {
     } 
 }
 
-module generate_extra_labels(params=[2, 95, "Label"]) {
-    translate([eurorack_w * params[0], params[1], panel_thickness - text_depth ])
+module generate_extra_labels(params, width) {
+    translate([width, params[1], panel_thickness - text_depth ])
     rotate([0, 0, params[3] ? params[3] : 0])
     linear_extrude(height = text_depth + 1)
     text(params[2], font = label_font, size = label_font_size, halign = "center");
 }
 
-module generate_pots(params=[2, 95, "Label"]) {
-    translate([eurorack_w * params[0], params[1], component_depth])
+module generate_pots(params, width) {
+    translate([width, params[1], component_depth])
     rotate([0, 0, params[3] ? params[3] : 0])
     #pot_alpha_16mm();
 
-    translate([eurorack_w * params[0], params[1] + pot_label_distance, panel_thickness - text_depth])
+    translate([width, params[1] + pot_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
     text(params[2], font = label_font, size = pot_label_font_size, halign = "center", valign = "center");
 }
 
-module generate_jacks(params=[2, 95, "Label"]){
+module generate_jacks(params, width){
     if (!params[3] || params[3] == "35mm") {
-        translate([eurorack_w * params[0], params[1], component_depth])
+        translate([width, params[1], component_depth])
         rotate([0, 0, params[4] ? params[4] : 0])
         #jack_35mm();
 
-        translate([eurorack_w * params[0], params[1] + jack_label_distance, panel_thickness - text_depth])
+        translate([width, params[1] + jack_label_distance, panel_thickness - text_depth])
         linear_extrude(height = text_depth + 1)
         text(params[2], font = label_font, size = jack_label_font_size, halign = "center", valign = "center");
     } else if (params[3] == "14in") {
-        translate([eurorack_w * params[0], params[1], component_depth])
+        translate([width, params[1], component_depth])
         rotate([0, 0, params[4] ? params[4] : 0])
         #jack_14in();
 
-        translate([eurorack_w * params[0], params[1] + jack_14in_label_distance, panel_thickness - text_depth])
+        translate([width, params[1] + jack_14in_label_distance, panel_thickness - text_depth])
         linear_extrude(height = text_depth + 1)
         text(params[2], font = label_font, size = jack_14in_label_font_size, halign = "center", valign = "center");
     }
 }
 
-module generate_switches(params=[2, 95, "Label", ""]){
-    translate([eurorack_w * params[0], params[1], component_depth])
+module generate_switches(params, width){
+    translate([width, params[1], component_depth])
     rotate([0, 0, params[4] ? params[4] : 0])
     #switch();
 
-    translate([eurorack_w * params[0], params[1] + switch_label_distance, panel_thickness - text_depth])
+    translate([width, params[1] + switch_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
     text(params[2], font = label_font, size = switch_label_font_size, halign = "center", valign = "center");
     
-    translate([eurorack_w * params[0], params[1] - switch_label_distance, panel_thickness - text_depth])
+    translate([width, params[1] - switch_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
     text(params[3], font = label_font, size = switch_label_font_size, halign = "center", valign = "center");
 }
 
 
-module generate_leds(params=[2, 60, 3]){
-    translate([eurorack_w * params[0], params[1], component_depth])
+module generate_leds(params, width){
+    translate([width, params[1], component_depth])
     #led(d = params[2]);
 }
 
