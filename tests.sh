@@ -1,10 +1,10 @@
 #!/bin/bash
 
-mkdir -p output
+mkdir -p tests/output
 
 for i in tests/*.scad
 do
-  f=${i%.*}
+  f=$(basename -- ${i%.*})
   echo "Working on $f..."
   openscad -o tests/output/$f.png tests/$f.scad 
 done
