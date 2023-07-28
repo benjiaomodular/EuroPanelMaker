@@ -47,6 +47,10 @@ switches = [
 leds = [
     [x (in HP column), y (mm), diameter (mm)]
 ];
+
+keys = [
+    [x (in HP column, y (mm), label)],
+];
 ```
 Add as many components as necessary in each array. Some notes:
 
@@ -78,6 +82,8 @@ jack_label_distance = 8;
 jack_label_font_size = 3;
 toggle_label_distance = 12;
 toggle_label_font_size = 3;
+key_label_distance = 14;
+key_label_font_size = 3;
 ```
 
 Additionally, extra labels can be added to the panel.
