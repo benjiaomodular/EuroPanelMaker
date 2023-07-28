@@ -4,6 +4,7 @@ use <components/led.scad>
 use <components/pot_alpha_16mm.scad>
 use <components/mounting_tab.scad>
 use <components/switch.scad>
+use <components/key.scad>
 
 eurorack_h = 128.5;
 eurorack_w = 5.08;
@@ -31,11 +32,13 @@ leds = [];
 jacks = [];
 switches = [];
 labels = [];
+keys = [];
 pots_mm = [];
 leds_mm = [];
 jacks_mm = [];
 switches_mm = [];
 labels_mm = [];
+keys_mm = [];
 rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
 
 label_font = "Liberation Sans:style=bold";
@@ -48,6 +51,8 @@ jack_14in_label_distance = 12;
 jack_14in_label_font_size = 3;
 switch_label_distance = 12;
 switch_label_font_size = 3;
+key_label_distance = 14;
+key_label_font_size = 3;
 
 // Flip panel for 3D printing
 panel_flipped = false;
@@ -132,6 +137,20 @@ module generatePanel() {
                 if (switches_mm[idx]) {
                     echo("SWITCH:", idx = switches_mm[idx]);
                     generate_switches(switches_mm[idx], switches_mm[idx][0]);
+                }
+            }
+ 
+             for (idx = [0 : len(keys)]) {
+                if (keys[idx]) {
+                    echo("KEY:", idx = keys[idx]);
+                    generate_keys(keys[idx], eurorack_w * keys[idx][0]);
+                }
+            }
+
+            for (idx = [0 : len(keys_mm)]) {
+                if (keys_mm[idx]) {
+                    echo("KEY:", idx = keys_mm[idx]);
+                    generate_keys(keys_mm[idx], keys_mm[idx][0]);
                 }
             }
             
@@ -285,6 +304,15 @@ module generate_switches(params, width){
     translate([width, params[1] - switch_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
     text(params[3], font = label_font, size = switch_label_font_size, halign = "center", valign = "center");
+}
+
+module generate_keys(params, width){
+    translate([width, params[1], component_depth])
+    #key();
+
+    translate([width, params[1] + key_label_distance, panel_thickness - text_depth])
+    linear_extrude(height = text_depth + 1)
+    text(params[2], font = label_font, size = key_label_font_size, halign = "center", valign = "center");
 }
 
 
