@@ -12,9 +12,9 @@ leds = []; // x (in HP column), y (mm), diameter (mm)
 jacks = [
     [1, 80, "J1"],
     [3, 80, "J2"],
-    [1, 50, "J3", 180],
-    [3, 50, "J4", 180],
-    [1, 20, "J5", -90]
+    [1, 50, "J3", "35mm", 180],
+    [3, 50, "J4", "35mm", 180],
+    [1, 20, "J5", "35mm", -90]
 ]; // x (in HP column), y (mm), label, rotation (degrees)
 
 panel_flipped = true;
