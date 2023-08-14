@@ -51,6 +51,10 @@ leds = [
 keys = [
     [x (in HP column, y (mm), label)],
 ];
+
+rectangular_holes = [
+    [x, y, inner_width (mm), inner_height (mm), outer_width (mm), outer_height (mm)]
+];
 ```
 Add as many components as necessary in each array. Some notes:
 
