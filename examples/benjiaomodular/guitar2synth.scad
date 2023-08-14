@@ -9,13 +9,13 @@ margin = 3;
 pots = [];
 
 leds = [
-    [2, 105, 12],
-    [2, 63, 3],
-    [2, 20, 12]];
+    [2, 63, 3]];
 
 jacks = [
-    [2, 85, "To Synth", -90],
-    [2, 40, "From Synth", -90]];
+    [2, 105, "", "14in", -90],
+    [2, 20, "", "14in", -90],
+    [2, 85, "To Synth", "35mm", -90],
+    [2, 40, "From Synth", "35mm", -90]];
 
 panel_flipped = false;
 generatePanel();

@@ -22,7 +22,7 @@ jacks = [
     [2, 86, "PROB_IN"],
     [6, 15, "GATE"],
     [2, 15, "~GATE"],
-    [6, 40, "SNH_OUT", 180]];
+    [6, 40, "SNH_OUT", "35mm", 180]];
 
 panel_flipped = false;
 generatePanel();
