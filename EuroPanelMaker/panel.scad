@@ -33,13 +33,15 @@ jacks = [];
 switches = [];
 labels = [];
 keys = [];
+rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
+
 pots_mm = [];
 leds_mm = [];
 jacks_mm = [];
 switches_mm = [];
 labels_mm = [];
 keys_mm = [];
-rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
+rectangular_holes_mm = []; // [3, 100, x1, y1, x2, y2]
 
 label_font = "Liberation Sans:style=bold";
 label_font_size = 3;
@@ -171,7 +173,14 @@ module generatePanel() {
             for (idx = [0 : len(rectangular_holes)]) {
                 if (rectangular_holes[idx]) {
                     echo("HOLE:", idx = rectangular_holes[idx]);
-                    generate_rectangular_holes(rectangular_holes[idx]);
+                    generate_rectangular_holes(rectangular_holes[idx], eurorack_w * rectangular_holes[idx][0]);
+                }
+            }
+            
+            for (idx = [0 : len(rectangular_holes_mm)]) {
+                if (rectangular_holes_mm[idx]) {
+                    echo("HOLE:", idx = rectangular_holes_mm[idx]);
+                    generate_rectangular_holes(rectangular_holes_mm[idx], rectangular_holes_mm[idx][0]);
                 }
             }
         }
@@ -179,8 +188,8 @@ module generatePanel() {
 
 }
 
-module generate_rectangular_holes(params = [3, 100, 25, 20, 30, 30]) {
-    translate([eurorack_w * params[0], params[1], 0 ])
+module generate_rectangular_holes(params = [3, 100, 25, 20, 30, 30], xpos) {
+    translate([xpos, params[1], 0 ])
     union() {
         #cube([params[2], params[3], panel_thickness*2], center=true);
         
