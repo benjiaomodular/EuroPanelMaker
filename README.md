@@ -36,6 +36,10 @@ pots = [
     [x (in HP column), y (mm), label, rotation (degrees)]
 ];
 
+pots_rd901f = [
+    [x (in HP column), y (mm), label, rotation (degrees)]
+];
+
 jacks = [
     [x (in HP column), y (mm), label, size, rotation (degrees)]
 ];
