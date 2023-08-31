@@ -5,6 +5,7 @@ use <components/pot_alpha_16mm.scad>
 use <components/mounting_tab.scad>
 use <components/switch.scad>
 use <components/key.scad>
+use <components/spacer.scad>
 
 eurorack_h = 128.5;
 eurorack_w = 5.08;
@@ -183,9 +184,29 @@ module generatePanel() {
                     generate_rectangular_holes(rectangular_holes_mm[idx], rectangular_holes_mm[idx][0]);
                 }
             }
+            
+            for (idx = [0 : len(spacers)]) {
+                if (spacers[idx]) {
+                    echo("SPACER:", idx = spacers[idx]);
+                    generate_spacers(spacers[idx], eurorack_w * spacers[idx][0]);
+                }
+            }
+            
+            for (idx = [0 : len(spacers_mm)]) {
+                if (spacers_mm[idx]) {
+                    echo("SPACER_MM:", idx = spacers_mm[idx]);
+                    generate_spacers(spacers_mm[idx], spacers_mm[idx][0]);
+                }
+            }
         }
     }
 
+}
+
+
+module generate_spacers(params = [3, 100, 3], xpos){
+    translate([xpos, params[1], 0 ])
+        spacer(m=params[2]);
 }
 
 module generate_rectangular_holes(params = [3, 100, 25, 20, 30, 30], xpos) {

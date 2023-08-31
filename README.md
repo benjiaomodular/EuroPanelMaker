@@ -55,7 +55,12 @@ keys = [
 rectangular_holes = [
     [x, y, inner_width (mm), inner_height (mm), outer_width (mm), outer_height (mm)]
 ];
+
+spacers = [
+    [x, y, size (2, 2.5, 3, 4, 5, 6)]
+];
 ```
+
 Add as many components as necessary in each array. Some notes:
 
 - The rotation parameter on any component can be omitted for no rotation
