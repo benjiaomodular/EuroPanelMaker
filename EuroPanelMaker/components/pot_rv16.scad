@@ -3,7 +3,7 @@
 tolerance = 0.3;
 $fn = $preview ? 20 : 100;
 
-module pot_alpha_16mm() {
+module pot_rv16() {
     cylinder(r = 3.5 + tolerance, h = 8);
     
     translate([0, 0, -0.5])

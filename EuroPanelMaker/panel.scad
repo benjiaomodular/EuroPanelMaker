@@ -1,7 +1,7 @@
 use <components/jack_35mm.scad>
 use <components/jack_14in.scad>
 use <components/led.scad>
-use <components/pot_alpha_16mm.scad>
+use <components/pot_rv16.scad>
 use <components/pot_rd901f.scad>
 use <components/mounting_tab.scad>
 use <components/switch.scad>
@@ -314,7 +314,7 @@ module generate_extra_labels(params, width) {
 module generate_pots(params, width) {
     translate([width, params[1], component_depth])
     rotate([0, 0, params[3] ? params[3] : 0])
-    #pot_alpha_16mm();
+    #pot_rv16();
 
     translate([width, params[1] + pot_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
