@@ -1,7 +1,8 @@
 use <components/jack_35mm.scad>
 use <components/jack_14in.scad>
 use <components/led.scad>
-use <components/pot_alpha_16mm.scad>
+use <components/pot_rv16.scad>
+use <components/pot_rd901f.scad>
 use <components/mounting_tab.scad>
 use <components/switch.scad>
 use <components/key.scad>
@@ -29,13 +30,16 @@ title_y = 118;
 title_rotate = 0;
 
 pots = [];
+pots_rd901f = [];
 leds = [];
 jacks = [];
 switches = [];
 labels = [];
 keys = [];
 rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
+spacers = [];
 
+pots_rd901f_mm = [];
 pots_mm = [];
 leds_mm = [];
 jacks_mm = [];
@@ -43,6 +47,7 @@ switches_mm = [];
 labels_mm = [];
 keys_mm = [];
 rectangular_holes_mm = []; // [3, 100, x1, y1, x2, y2]
+spacers_mm = [];
 
 label_font = "Liberation Sans:style=bold";
 label_font_size = 3;
@@ -101,6 +106,20 @@ module generatePanel() {
                 }
             }
             
+            for (idx = [0 : len(pots_rd901f)]) {
+                if (pots_rd901f[idx]) {
+                    echo("POTS RD901F:", idx = pots_rd901f[idx]);
+                    generate_pots_rd901f(pots_rd901f[idx], eurorack_w * pots_rd901f[idx][0]);
+                }
+            }
+            
+            for (idx = [0 : len(pots_rd901f_mm)]) {
+                if (pots_rd901f_mm[idx]) {
+                    echo("POTS RD901F:", idx = pots_rd901f_mm[idx]);
+                    generate_pots_rd901f(pots_rd901f_mm[idx], pots_rd901f_mm[idx][0]);
+                }
+            }
+                     
             for (idx = [0 : len(leds)]) {
                 if (leds[idx]) {
                     echo("LED:", idx = leds[idx]);
@@ -295,7 +314,17 @@ module generate_extra_labels(params, width) {
 module generate_pots(params, width) {
     translate([width, params[1], component_depth])
     rotate([0, 0, params[3] ? params[3] : 0])
-    #pot_alpha_16mm();
+    #pot_rv16();
+
+    translate([width, params[1] + pot_label_distance, panel_thickness - text_depth])
+    linear_extrude(height = text_depth + 1)
+    text(params[2], font = label_font, size = pot_label_font_size, halign = "center", valign = "center");
+}
+
+module generate_pots_rd901f(params, width) {
+    translate([width, params[1], component_depth])
+    rotate([0, 0, params[3] ? params[3] : 0])
+    #pot_rd901f();
 
     translate([width, params[1] + pot_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
