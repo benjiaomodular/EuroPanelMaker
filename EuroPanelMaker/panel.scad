@@ -37,6 +37,7 @@ switches = [];
 labels = [];
 keys = [];
 rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
+spacers = [];
 
 pots_rd901f_mm = [];
 pots_mm = [];
@@ -46,6 +47,7 @@ switches_mm = [];
 labels_mm = [];
 keys_mm = [];
 rectangular_holes_mm = []; // [3, 100, x1, y1, x2, y2]
+spacers_mm = [];
 
 label_font = "Liberation Sans:style=bold";
 label_font_size = 3;
