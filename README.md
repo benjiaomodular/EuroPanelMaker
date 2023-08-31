@@ -1,4 +1,23 @@
 # EuroPanelMaker
+
+![GitHub Releases](https://img.shields.io/github/release/benjiaomodular/EuroPanelMaker?sort=date) ![Discord](https://img.shields.io/discord/1085224368126312468?link=https%3A%2F%2Fdiscord.gg%2F4ze9BMehXX)
+
+Community
+
+    GitHub
+
+Open Collective
+Discord
+Twitter
+Awesome Badges
+Stats
+
+    Service Status
+
+Metrics dashboard
+Copyright © 2023 Shields.io. Built with Docusaurus.)
+
+
 Eurorack panel generator for OpenSCAD by [@benjiaomodular](https://www.instagram.com/benjiaomodular/).
 
 ![Template preview](preview.png)
@@ -44,8 +63,13 @@ jacks = [
     [x (in HP column), y (mm), label, size, rotation (degrees)]
 ];
 
+// MTS-102
 switches = [
     [x (in HP column), y (mm), label above, label below, rotation (degrees)]
+];
+
+switches_sr16 = [
+    [x (in HP column), y (mm), label, rotation (degrees)]
 ];
 
 leds = [

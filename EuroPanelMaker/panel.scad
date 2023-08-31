@@ -5,6 +5,7 @@ use <components/pot_rv16.scad>
 use <components/pot_rd901f.scad>
 use <components/mounting_tab.scad>
 use <components/switch.scad>
+use <components/switch_sr16.scad>
 use <components/key.scad>
 use <components/spacer.scad>
 
@@ -34,6 +35,7 @@ pots_rd901f = [];
 leds = [];
 jacks = [];
 switches = [];
+switches_sr16 = [];
 labels = [];
 keys = [];
 rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
@@ -44,6 +46,7 @@ pots_mm = [];
 leds_mm = [];
 jacks_mm = [];
 switches_mm = [];
+switches_sr16_mm = [];
 labels_mm = [];
 keys_mm = [];
 rectangular_holes_mm = []; // [3, 100, x1, y1, x2, y2]
@@ -154,7 +157,21 @@ module generatePanel() {
                     generate_switches(switches[idx], eurorack_w * switches[idx][0]);
                 }
             }
-
+            
+            for (idx = [0 : len(switches_sr16)]) {
+                if (switches_sr16[idx]) {
+                    echo("SWITCH SR16:", idx = switches_sr16[idx]);
+                    generate_switches_sr16(switches_sr16[idx], eurorack_w * switches_sr16[idx][0]);
+                }
+            }            
+            
+            for (idx = [0 : len(switches_sr16_mm)]) {
+                if (switches_sr16_mm[idx]) {
+                    echo("SWITCH SR16 (mm):", idx = switches_sr16_mm[idx]);
+                    generate_switches_sr16(switches_sr16_mm[idx], switches_sr16_mm[idx][0]);
+                }
+            }
+            
             for (idx = [0 : len(switches_mm)]) {
                 if (switches_mm[idx]) {
                     echo("SWITCH:", idx = switches_mm[idx]);
@@ -363,6 +380,16 @@ module generate_switches(params, width){
     translate([width, params[1] - switch_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
     text(params[3], font = label_font, size = switch_label_font_size, halign = "center", valign = "center");
+}
+
+module generate_switches_sr16(params, xpos) {
+    translate([xpos, params[1], component_depth - 1])
+    rotate([0, 0, params[3] ? params[3] : 0])
+    #switch_sr16();
+
+    translate([xpos, params[1] + pot_label_distance, panel_thickness - text_depth])
+    linear_extrude(height = text_depth + 1)
+    text(params[2], font = label_font, size = pot_label_font_size, halign = "center", valign = "center");
 }
 
 module generate_keys(params, width){
