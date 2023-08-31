@@ -1,3 +1,5 @@
+// Based on Alpha RV16 dimensions
+
 tolerance = 0.3;
 $fn = $preview ? 20 : 100;
 
