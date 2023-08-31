@@ -44,8 +44,13 @@ jacks = [
     [x (in HP column), y (mm), label, size, rotation (degrees)]
 ];
 
+// MTS-102
 switches = [
     [x (in HP column), y (mm), label above, label below, rotation (degrees)]
+];
+
+switches_sr16 = [
+    [x (in HP column), y (mm), label, rotation (degrees)]
 ];
 
 leds = [
