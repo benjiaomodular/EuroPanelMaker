@@ -1,6 +1,6 @@
 # EuroPanelMaker
 
-![GitHub Releases](https://img.shields.io/github/release/benjiaomodular/EuroPanelMaker?sort=date) ![Discord](https://img.shields.io/discord/1085224368126312468?link=https%3A%2F%2Fdiscord.gg%2F4ze9BMehXX)
+![GitHub Releases](https://img.shields.io/github/release/benjiaomodular/EuroPanelMaker?sort=date)
 
 Community
 
