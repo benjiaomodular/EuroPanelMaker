@@ -2,22 +2,6 @@
 
 ![GitHub Releases](https://img.shields.io/github/release/benjiaomodular/EuroPanelMaker?sort=date)
 
-Community
-
-    GitHub
-
-Open Collective
-Discord
-Twitter
-Awesome Badges
-Stats
-
-    Service Status
-
-Metrics dashboard
-Copyright © 2023 Shields.io. Built with Docusaurus.)
-
-
 Eurorack panel generator for OpenSCAD by [@benjiaomodular](https://www.instagram.com/benjiaomodular/).
 
 ![Template preview](preview.png)
