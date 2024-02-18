@@ -8,6 +8,7 @@ use <components/switch.scad>
 use <components/switch_sr16.scad>
 use <components/key.scad>
 use <components/spacer.scad>
+use <components/speaker.scad>
 
 eurorack_h = 128.5;
 eurorack_w = 5.08;
@@ -40,6 +41,10 @@ labels = [];
 keys = [];
 rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
 spacers = [];
+//speakers = []; // [x, y, diameter]
+speakers = [
+    [11, 40, 75]
+]; 
 
 pots_rd901f_mm = [];
 pots_mm = [];
@@ -234,11 +239,23 @@ module generatePanel() {
                     generate_spacers(spacers_mm[idx], spacers_mm[idx][0]);
                 }
             }
+            
+            for (idx = [0 : len(speakers)]) {
+                if (speakers[idx]) {
+                    echo("SPEAKERS:", idx = speakers[idx]);
+                    generate_speakers(speakers[idx], eurorack_w * speakers[idx][0]);
+                }
+            }
+            
         }
     }
 
 }
 
+module generate_speakers(params = [3, 100, 3], xpos){
+    translate([xpos, params[1], 0 ])
+        speaker(d=params[2]);
+}
 
 module generate_spacers(params = [3, 100, 3], xpos){
     translate([xpos, params[1], 0 ])
