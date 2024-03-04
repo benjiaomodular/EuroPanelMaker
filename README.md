@@ -68,6 +68,14 @@ rectangular_holes = [
     [x, y, inner_width (mm), inner_height (mm), outer_width (mm), outer_height (mm)]
 ];
 
+speakers = [
+    [x (in HP column), y (mm), speaker hole diameter, mount diameter, distance between two opposite screws]
+];
+
+circular_holes = [
+    [x, y, diameter]
+];
+
 spacers = [
     [x, y, size (2, 2.5, 3, 4, 5, 6)]
 ];
