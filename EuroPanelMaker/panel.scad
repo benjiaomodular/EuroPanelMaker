@@ -8,6 +8,7 @@ use <components/switch.scad>
 use <components/switch_sr16.scad>
 use <components/key.scad>
 use <components/spacer.scad>
+use <components/speaker.scad>
 
 eurorack_h = 128.5;
 eurorack_w = 5.08;
@@ -33,23 +34,26 @@ title_rotate = 0;
 pots = [];
 pots_rd901f = [];
 leds = [];
-jacks = [];
+jacks = []; // [x (in HP column), y (mm), label, size (35mm or 14in), rotation (degrees)]
 switches = [];
 switches_sr16 = [];
 labels = [];
 keys = [];
 rectangular_holes = []; // [3, 100, x1, y1, x2, y2]
+circular_holes = []; // [3, 100, dia]
 spacers = [];
+speakers = []; // x (in HP column), y (mm), speaker hole diameter, mount diameter, distance between two opposite screws
 
 pots_rd901f_mm = [];
 pots_mm = [];
 leds_mm = [];
-jacks_mm = [];
+jacks_mm = []; 
 switches_mm = [];
 switches_sr16_mm = [];
 labels_mm = [];
 keys_mm = [];
 rectangular_holes_mm = []; // [3, 100, x1, y1, x2, y2]
+circular_holes_mm = []; // [10, 100, dia]
 spacers_mm = [];
 
 label_font = "Liberation Sans:style=bold";
@@ -220,6 +224,20 @@ module generatePanel() {
                     generate_rectangular_holes(rectangular_holes_mm[idx], rectangular_holes_mm[idx][0]);
                 }
             }
+
+            for (idx = [0 : len(circular_holes)]) {
+                if (circular_holes[idx]) {
+                    echo("HOLE:", idx = circular_holes[idx]);
+                    generate_circular_holes(circular_holes[idx], eurorack_w * circular_holes[idx][0]);
+                }
+            }
+            
+            for (idx = [0 : len(circular_holes_mm)]) {
+                if (circular_holes_mm[idx]) {
+                    echo("HOLE:", idx = circular_holes_mm[idx]);
+                    generate_circular_holes_mm(circular_holes_mm[idx], circular_holes_mm[idx][0]);
+                }
+            }
             
             for (idx = [0 : len(spacers)]) {
                 if (spacers[idx]) {
@@ -234,11 +252,23 @@ module generatePanel() {
                     generate_spacers(spacers_mm[idx], spacers_mm[idx][0]);
                 }
             }
+            
+            for (idx = [0 : len(speakers)]) {
+                if (speakers[idx]) {
+                    echo("SPEAKERS:", idx = speakers[idx]);
+                    generate_speakers(speakers[idx], eurorack_w * speakers[idx][0]);
+                }
+            }
+            
         }
     }
 
 }
 
+module generate_speakers(params = [3, 100, 3], xpos){
+    translate([xpos, params[1], 0 ])
+        #speaker(d=params[2], mount=params[3], screw=params[4]);
+}
 
 module generate_spacers(params = [3, 100, 3], xpos){
     translate([xpos, params[1], 0 ])
@@ -252,6 +282,14 @@ module generate_rectangular_holes(params = [3, 100, 25, 20, 30, 30], xpos) {
         
         translate([0, 0, -panel_thickness])
         #cube([params[4], params[5], panel_thickness], center=true);   
+    }
+}
+
+module generate_circular_holes(params = [3, 100, 25, 20, 30, 30], xpos) {
+    translate([xpos, params[1], 0 ])
+    union() {
+        translate([0, 0, -rib_thickness/2])
+        #cylinder(r=params[2]/2, (panel_thickness + rib_thickness)*2, center=true);
     }
 }
     
