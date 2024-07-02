@@ -102,8 +102,8 @@ A number of variables can be altered. Here is a list with their default values:
 margin = 0;
 text_depth = 1.4;
 title_font_size = 4.5;
-title_font = "Liberation Sans:style=bold";
-label_font = "Liberation Sans:style=bold";
+title_font = "Overpass:style=Bold";
+label_font = "Overpass:style=Bold";
 label_font_size = 3;
 pot_label_distance = 12;
 pot_label_font_size = 3;

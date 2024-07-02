@@ -10,6 +10,25 @@ use <components/key.scad>
 use <components/spacer.scad>
 use <components/speaker.scad>
 
+use <fonts/Overpass-Black.ttf>
+use <fonts/Overpass-BlackItalic.ttf>
+use <fonts/Overpass-Bold.ttf>
+use <fonts/Overpass-BoldItalic.ttf>
+use <fonts/Overpass-ExtraBold.ttf>
+use <fonts/Overpass-ExtraBoldItalic.ttf>
+use <fonts/Overpass-ExtraLight.ttf>
+use <fonts/Overpass-ExtraLightItalic.ttf>
+use <fonts/Overpass-Italic.ttf>
+use <fonts/Overpass-Light.ttf>
+use <fonts/Overpass-LightItalic.ttf>
+use <fonts/Overpass-Medium.ttf>
+use <fonts/Overpass-MediumItalic.ttf>
+use <fonts/Overpass-Regular.ttf>
+use <fonts/Overpass-SemiBold.ttf>
+use <fonts/Overpass-SemiBoldItalic.ttf>
+use <fonts/Overpass-Thin.ttf>
+use <fonts/Overpass-ThinItalic.ttf>
+
 eurorack_h = 128.5;
 eurorack_w = 5.08;
 
@@ -26,7 +45,7 @@ c = w / 2;
 
 title = "Test";
 title_font_size = 4.5;
-title_font = "Liberation Sans:style=bold";
+title_font = "Overpass:style=Bold";
 title_x = w / 2;
 title_y = 118;
 title_rotate = 0;
@@ -56,7 +75,7 @@ rectangular_holes_mm = []; // [3, 100, x1, y1, x2, y2]
 circular_holes_mm = []; // [10, 100, dia]
 spacers_mm = [];
 
-label_font = "Liberation Sans:style=bold";
+label_font = "Overpass:style=Bold";
 label_font_size = 3;
 pot_label_distance = 12;
 pot_label_font_size = 3;
