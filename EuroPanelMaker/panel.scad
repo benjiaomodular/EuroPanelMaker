@@ -428,7 +428,7 @@ module generate_jacks(params, width){
 
     } else if (params[3] == "thonkiconn_stereo") {
 
-        translate([width, params[1], cdepth])
+        translate([width, params[1], component_depth])
         rotate([0, 0, params[4] ? params[4] : 0])
         #jack_thonkiconn_stereo();
 
