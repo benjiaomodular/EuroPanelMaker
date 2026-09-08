@@ -379,6 +379,9 @@ module generate_mounting_holes(params=[2, 95, "Label"]) {
     } 
 }
 
+function alist_get(alist, key, default) = (!alist  || search([key], alist) == [[]]) ? default :
+    alist[search([key],alist)[0]][1];
+
 module generate_extra_labels(params, width) {
     translate([width, params[1], panel_thickness - text_depth ])
     rotate([0, 0, params[3] ? params[3] : 0])
@@ -407,6 +410,8 @@ module generate_pots_rd901f(params, width) {
 }
 
 module generate_jacks(params, width){
+    component_depth = alist_get(params[5], "component_depth", component_depth);
+
     if (!params[3] || params[3] == "35mm") {
         translate([width, params[1], component_depth])
         rotate([0, 0, params[4] ? params[4] : 0])
@@ -437,9 +442,13 @@ module generate_jacks(params, width){
 }
 
 module generate_switches(params, width){
+    component_depth = alist_get(params[5], "component_depth", component_depth);
+    switch_size = alist_get(params[5], "size", undef);
+    diameter = alist_get(params[5], "diameter", undef);
+
     translate([width, params[1], component_depth])
     rotate([0, 0, params[4] ? params[4] : 0])
-    #switch();
+    #switch(switch_size, diameter);
 
     translate([width, params[1] + switch_label_distance, panel_thickness - text_depth])
     linear_extrude(height = text_depth + 1)
@@ -469,10 +478,14 @@ module generate_keys(params, width){
     text(params[2], font = label_font, size = key_label_font_size, halign = "center", valign = "center");
 }
 
-
 module generate_leds(params, width){
+    component_depth = alist_get(params[3], "component_depth", component_depth);
+    flange_diam = alist_get(params[3], "flange_diam", undef);
+    diam = params[2];
+
     translate([width, params[1], component_depth])
-    #led(d = params[2]);
+    #led(diam, flange_diam);
+
 }
 
 // uncomment the following line for testing, otherwise it causes panels to generate twice
