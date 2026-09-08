@@ -7,7 +7,7 @@ module pot_rv16() {
     cylinder(r = 3.5 + tolerance, h = 8);
     
     translate([0, 0, -0.5])
-    cylinder(r = 5.4 + tolerance, h = 0.5);
+    cylinder(r = 5.9 + tolerance, h = 0.5);
        
     translate([0, 0, -10.5])
     union() {
