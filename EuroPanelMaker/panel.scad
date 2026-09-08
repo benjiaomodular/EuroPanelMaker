@@ -97,6 +97,103 @@ panel_rotate = panel_flipped ? 180 : 0;
 
 margin = 0;
 
+// Board mount
+BOARDMOUNT_HOLE_ALL_CORNERS = -1234567;
+
+boardmount_board = [];
+// [length,
+//   width,
+//   hole_positions, // e.g [[hole1_yoffset, hole1_zoffset], [hole2_yoffset, hole2_zoffset]] where negative offsets means measure from other edge
+//                   // or [[hole_yoffs, hole_zoffset, BOARDMOUNT_HOLE_ALL_CORNERS]] - leads to 4 holes being added symmetrically
+//   hole_diam,
+//   y_offset,       // centered if not passed
+//   z_offset,       // 13-component_depth if not passed
+// ]
+
+boardmount_wedges=[];
+// [ [yoffset, size,thickness,rotation] ]
+
+module boardmount_wedge(params)
+{
+    y = params[0];
+    size = params[1] ? params[1] : 4;
+    thickness = params[2] ? params[2] : 1;
+    angle = params[3] ? params[3] : 0;
+
+    depth = thickness/2 * tan(abs(angle));
+
+    translate([0,y+thickness/2,0])
+        rotate([-90,0,angle])
+    {
+        translate([depth, 0, -thickness/2])
+        linear_extrude(thickness)
+        {
+            polygon([[0,0], [-(size+depth),0], [0,(size+depth)]]);
+        }
+    }
+}
+
+function generate_symmetrical_holes(h0) = [
+    [h0[0], h0[1]],
+    [h0[0], -h0[1]],
+    [-h0[0], h0[1]],
+    [-h0[0], -h0[1]]];
+
+module generate_boardmount()
+{
+    if(boardmount_board)
+    {
+        board_length = boardmount_board[0];
+        board_width = boardmount_board[1];
+        board_mount_height=2;
+        holes = boardmount_board[2][0][2] == BOARDMOUNT_HOLE_ALL_CORNERS ? generate_symmetrical_holes(boardmount_board[2][0]) : boardmount_board[2];
+        hole_diam = boardmount_board[3];
+
+        thickness=2;
+        board_zoffset =boardmount_board[5]? boardmount_board[5] : 13 - component_depth;
+        length = board_length;
+        height = board_zoffset + board_width;
+        yoffset=boardmount_board[4]? boardmount_board[4] : (eurorack_h-board_length)/2;
+
+        translate([hp*eurorack_w-thickness,yoffset,-rib_thickness])
+        {
+            for(w=boardmount_wedges) {
+                boardmount_wedge(w);
+            }
+
+            translate([0,0,-height])
+            {
+                if($preview) translate([-thickness-board_mount_height,0,0]) #cube([board_mount_height, board_length, board_width]);
+
+                difference()
+                {
+                    union()
+                    {
+                        cube([thickness,length,height]);
+                        for(hole =holes) {
+                            y=hole[0] < 0 ? board_length+hole[0] : hole[0];
+                            z=hole[1] < 0 ? board_width+hole[1] : hole[1];
+                            translate([-board_mount_height,y,z])
+                            rotate([0,90,0])
+                                cylinder(h=board_mount_height,d=2*hole_diam);
+                        }
+
+                    }
+
+                    for(hole =holes) {
+                        y=hole[0] < 0 ? board_length+hole[0] : hole[0];
+                        z=hole[1] < 0 ? board_width+hole[1] : hole[1];
+                        translate([-board_mount_height-1,y,z])
+                            rotate([0,90,0])
+                            cylinder(d=hole_diam, h=20);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 module generatePanel() {
     $fn = $preview ? 20 : 100;
 
@@ -106,6 +203,7 @@ module generatePanel() {
     rotate([0, panel_rotate, 0])
     difference(){
         union(){
+            generate_boardmount();
             translate([-margin, 0, 0])
             union() {
                 cube([w + margin * 2, eurorack_h, panel_thickness]);
