@@ -1,5 +1,6 @@
 use <components/jack_35mm.scad>
 use <components/jack_thonkiconn.scad>
+use <components/jack_thonkiconn_stereo.scad>
 use <components/jack_14in.scad>
 use <components/led.scad>
 use <components/pot_rv16.scad>
@@ -420,6 +421,16 @@ module generate_jacks(params, width){
         translate([width, params[1], component_depth])
         rotate([0, 0, params[4] ? params[4] : 0])
         #jack_thonkiconn();
+
+        translate([width, params[1] + jack_label_distance, panel_thickness - text_depth])
+        linear_extrude(height = text_depth + 1)
+        text(params[2], font = label_font, size = jack_label_font_size, halign = "center", valign = "center");
+
+    } else if (params[3] == "thonkiconn_stereo") {
+
+        translate([width, params[1], component_depth])
+        rotate([0, 0, params[4] ? params[4] : 0])
+        #jack_thonkiconn_stereo();
 
         translate([width, params[1] + jack_label_distance, panel_thickness - text_depth])
         linear_extrude(height = text_depth + 1)
