@@ -235,10 +235,10 @@ def main():
                              "'openscad' on the PATH)")
     parser.add_argument("--fuzz", default=DEFAULT_FUZZ,
                         help="colour distance at which two pixels count as "
-                             f"different (default: {DEFAULT_FUZZ})")
+                             "different (default: %(default)s)")
     parser.add_argument("--max-pixels", type=int, default=DEFAULT_MAX_PIXELS,
                         help="number of differing pixels allowed per image "
-                             f"(default: {DEFAULT_MAX_PIXELS})")
+                             "(default: %(default)s)")
     parser.add_argument("--geometry", action="store_true",
                         help="with --check or --update: also check the volume, "
                              "centroid and bounding box of each panel (slow)")
