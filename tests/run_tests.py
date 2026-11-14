@@ -23,8 +23,8 @@ Exit status: 0 if everything passed, 1 if a test failed, 2 on a setup error.
 import argparse
 import concurrent.futures
 import os
-import platform
 import json
+import platform
 import re
 import shutil
 import subprocess
@@ -151,12 +151,13 @@ def compare(im, expected, actual, diff, fuzz, max_pixels):
     match = re.match(r"\s*([0-9.eE+-]+)", proc.stderr)
     if proc.returncode > 1 or not match:
         return [f"ImageMagick compare failed: {proc.stderr.strip()}"], ""
-    pixels = float(match.group(1))
+    # ImageMagick 7 can report fractional counts; round to whole pixels.
+    pixels = round(float(match.group(1)))
     if pixels > max_pixels:
-        return [f"{pixels:.0f} pixels differ (fuzz {fuzz}, allowed "
+        return [f"{pixels} pixels differ (fuzz {fuzz}, allowed "
                 f"{max_pixels}), see {diff.relative_to(TESTS_DIR.parent)}"], ""
     diff.unlink(missing_ok=True)
-    return [], f"({pixels:.0f} pixels differ)" if pixels else ""
+    return [], f"({pixels} pixels differ)" if pixels else ""
 
 
 def mesh_stats(off):
