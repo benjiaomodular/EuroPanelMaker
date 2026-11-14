@@ -8,6 +8,12 @@ then, depending on the mode:
   --check   compares each render with tests/expected/<name>.png
   --update  replaces the reference images in tests/expected/
 
+With --geometry, --check and --update also export each test to a mesh and
+check its volume, centroid and bounding box against tests/expected/<name>.json.
+This is slower, but unlike the images it does not depend on fonts, graphics
+drivers or anti-aliasing. It only covers the printable panel, not the
+components that are drawn transparently in the previews.
+
 Only the Python standard library is used. External tools: OpenSCAD and
 ImageMagick (version 6 or 7).
 
@@ -18,6 +24,7 @@ import argparse
 import concurrent.futures
 import os
 import platform
+import json
 import re
 import shutil
 import subprocess
@@ -30,6 +37,13 @@ EXPECTED_DIR = TESTS_DIR / "expected"
 
 DEFAULT_FUZZ = "10%"
 DEFAULT_MAX_PIXELS = 20
+
+# Tolerances for --geometry. OpenSCAD writes mesh vertices with six
+# significant digits, so the numbers can vary slightly between platforms.
+# Moving a 6 mm hole by 0.1 mm in a 4 HP panel shifts the centroid ~0.005 mm.
+VOLUME_TOLERANCE = 1e-6  # relative
+CENTROID_TOLERANCE = 5e-4  # mm
+BBOX_TOLERANCE = 1e-3  # mm
 
 
 class SetupError(Exception):
@@ -95,21 +109,23 @@ def find_tests(patterns):
 MESSAGE_RE = re.compile(r"^(ERROR|WARNING):.*$", re.MULTILINE)
 
 
-def render(openscad, scad, png):
-    """Render one test. Returns a list of problems (empty if it went well)."""
-    png.unlink(missing_ok=True)
-    proc = subprocess.run([openscad, "-o", str(png), str(scad)],
+def render(openscad, scad, out):
+    """Render one test to an image or a mesh, depending on the file name of
+    'out'. Returns a list of problems (empty if it went well)."""
+    out.unlink(missing_ok=True)
+    proc = subprocess.run([openscad, "-o", str(out), str(scad)],
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                           text=True, errors="replace", cwd=TESTS_DIR)
     problems = [m.group(0) for m in MESSAGE_RE.finditer(proc.stdout)]
     crashed = []
     if proc.returncode != 0:
         crashed.append(f"OpenSCAD exited with code {proc.returncode}")
-    if not png.exists() or png.stat().st_size == 0:
-        crashed.append("OpenSCAD did not write an image")
+    if not out.exists() or out.stat().st_size == 0:
+        crashed.append(f"OpenSCAD did not write {out.name}")
     if crashed:
         problems += crashed
-        if (platform.system() == "Linux" and not os.environ.get("DISPLAY")
+        if (out.suffix == ".png" and platform.system() == "Linux"
+                and not os.environ.get("DISPLAY")
                 and not os.environ.get("WAYLAND_DISPLAY")):
             problems.append("(no display found: OpenSCAD needs one to render "
                             "PNGs, try running under 'xvfb-run -a')")
@@ -143,6 +159,55 @@ def compare(im, expected, actual, diff, fuzz, max_pixels):
     return [], f"({pixels:.0f} pixels differ)" if pixels else ""
 
 
+def mesh_stats(off):
+    """Volume, centroid and bounding box of a closed mesh in OFF format."""
+    tokens = off.read_text().split()
+    if tokens[0] != "OFF":
+        raise ValueError(f"{off} is not an OFF file")
+    n_vertices, n_faces = int(tokens[1]), int(tokens[2])
+    numbers = iter(tokens[4:])
+    vertices = [(float(next(numbers)), float(next(numbers)), float(next(numbers)))
+                for _ in range(n_vertices)]
+    volume = 0.0
+    moment = [0.0, 0.0, 0.0]
+    for _ in range(n_faces):
+        face = [vertices[int(next(numbers))] for _ in range(int(next(numbers)))]
+        # Split the face into triangles, and each triangle and the origin
+        # into a tetrahedron with a signed volume.
+        a = face[0]
+        for b, c in zip(face[1:-1], face[2:]):
+            v = (a[0] * (b[1] * c[2] - b[2] * c[1])
+                 - a[1] * (b[0] * c[2] - b[2] * c[0])
+                 + a[2] * (b[0] * c[1] - b[1] * c[0])) / 6
+            volume += v
+            for k in range(3):
+                moment[k] += v * (a[k] + b[k] + c[k]) / 4
+    if not vertices or volume == 0:
+        raise ValueError(f"{off} has no volume")
+    return {
+        "volume": round(volume, 6),
+        "centroid": [round(m / volume, 6) for m in moment],
+        "bbox_min": [min(p[k] for p in vertices) for k in range(3)],
+        "bbox_max": [max(p[k] for p in vertices) for k in range(3)],
+    }
+
+
+def compare_geometry(expected_file, actual):
+    """Compare mesh stats with a reference file. Returns a list of problems."""
+    if not expected_file.exists():
+        return [f"no reference {expected_file.relative_to(TESTS_DIR.parent)} "
+                "(run with --update --geometry to create it)"]
+    expected = json.loads(expected_file.read_text())
+    problems = []
+    if abs(actual["volume"] - expected["volume"]) > VOLUME_TOLERANCE * abs(expected["volume"]):
+        problems.append(f"volume is {actual['volume']}, expected {expected['volume']}")
+    for key, tolerance in (("centroid", CENTROID_TOLERANCE),
+                           ("bbox_min", BBOX_TOLERANCE), ("bbox_max", BBOX_TOLERANCE)):
+        if any(abs(a - e) > tolerance for a, e in zip(actual[key], expected[key])):
+            problems.append(f"{key} is {actual[key]}, expected {expected[key]}")
+    return problems
+
+
 def open_file(path):
     system = platform.system()
     if system == "Windows":
@@ -174,6 +239,9 @@ def main():
     parser.add_argument("--max-pixels", type=int, default=DEFAULT_MAX_PIXELS,
                         help="number of differing pixels allowed per image "
                              f"(default: {DEFAULT_MAX_PIXELS})")
+    parser.add_argument("--geometry", action="store_true",
+                        help="with --check or --update: also check the volume, "
+                             "centroid and bounding box of each panel (slow)")
     parser.add_argument("--no-open", action="store_true",
                         help="with --show: write the collage but do not open it")
     parser.add_argument("-j", "--jobs", type=int, default=os.cpu_count() or 1,
@@ -203,6 +271,17 @@ def main():
                                args.fuzz, args.max_pixels)
         if not problems and args.update:
             shutil.copyfile(png, EXPECTED_DIR / f"{name}.png")
+        if args.geometry and not args.show:
+            off = OUTPUT_DIR / f"{name}.off"
+            mesh_problems = render(openscad, scad, off)
+            if not mesh_problems:
+                stats = mesh_stats(off)
+                (OUTPUT_DIR / f"{name}.json").write_text(json.dumps(stats, indent=2) + "\n")
+                if args.check:
+                    mesh_problems = compare_geometry(EXPECTED_DIR / f"{name}.json", stats)
+                elif not problems:
+                    shutil.copyfile(OUTPUT_DIR / f"{name}.json", EXPECTED_DIR / f"{name}.json")
+            problems += mesh_problems
         return name, problems, note
 
     print(f"Rendering {len(tests)} tests with {openscad}")

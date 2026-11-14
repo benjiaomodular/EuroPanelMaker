@@ -174,6 +174,7 @@ The reference images are rendered in the same environment as on GitHub Actions (
 
 Other options:
 - `python3 tests/run_tests.py --check jack` only runs the tests whose name contains `jack`.
+- `--geometry` also exports each panel to a mesh and checks its volume, centroid and bounding box against `tests/expected/<name>.json`. This is slower, but does not depend on fonts or graphics drivers. It covers only the printable panel, not the transparent components in the previews. GitHub Actions runs it too.
 - `--openscad PATH`, or the `OPENSCAD` environment variable, selects the OpenSCAD binary.
 - On Linux without a display (e.g. over SSH), run the script under `xvfb-run -a`.
 - `--help` lists all options.
