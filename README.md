@@ -148,12 +148,33 @@ Some helpful tips for contributing to the EuroPanelMaker library.
 TODO: Add guidelines.
 
 ### Visual Tests
-A script is available to verify that features of the library are functional. Running `./tests.sh` will generate a set of example panels which will be displayed for visual inspection (tested only on Linux).
+The panels in `tests/*.scad` exercise the features of the library. The script `tests/run_tests.py` renders them to `tests/output/` and works on Linux, Windows and macOS. It needs Python 3, [OpenSCAD](https://openscad.org/) and [ImageMagick](https://imagemagick.org/) (version 6 or 7).
 
-A similar image will be displayed:
+To look at the renders, run:
+
+```
+python3 tests/run_tests.py --show
+```
+
+(`./tests.sh` does the same.) A collage like this one opens in your default image viewer:
 
 ![docs/example-out.png](docs/example-out.png)
 
 Look out for misaligned or suspicious renderings. Individual SCAD files are available under `tests/` for further investigation.
 
-NOTE: This will probably be a temporary solution until a more automate testing process is available.
+To compare the renders with the reference images in `tests/expected/`, run:
+
+```
+python3 tests/run_tests.py --check
+```
+
+A test fails if OpenSCAD reports an error or a warning, or if its image differs from the reference. For each image that differs, a difference image `tests/output/<name>-diff.png` shows the changed pixels in red. GitHub Actions runs this check on every push and pull request, and uploads the renders and difference images when it fails.
+
+The reference images are rendered in the same environment as on GitHub Actions (Ubuntu 24.04, OpenSCAD 2021.01). Other OpenSCAD versions or graphics drivers can give small differences; `--fuzz` and `--max-pixels` adjust the tolerance. If a change to the library is supposed to change the renders, update the reference images with `--update`, check the new images and commit them.
+
+Other options:
+- `python3 tests/run_tests.py --check jack` only runs the tests whose name contains `jack`.
+- `--geometry` also exports each panel to a mesh and checks its volume, centroid and bounding box against `tests/expected/<name>.json`. This is slower, but does not depend on fonts or graphics drivers. It covers only the printable panel, not the transparent components in the previews. GitHub Actions runs it too.
+- `--openscad PATH`, or the `OPENSCAD` environment variable, selects the OpenSCAD binary.
+- On Linux without a display (e.g. over SSH), run the script under `xvfb-run -a`.
+- `--help` lists all options.

@@ -1,13 +1,4 @@
 #!/bin/bash
-
-mkdir -p tests/output
-
-for i in tests/*.scad
-do
-  f=$(basename -- ${i%.*})
-  echo "Working on $f..."
-  openscad -o tests/output/$f.png tests/$f.scad 
-done
-
-montage -density 300 -tile 4x0 -geometry +5+50 tests/output/test-*.png tests/output/out.png
-display tests/output/out.png
+# Renders all tests and shows them in a collage for visual inspection.
+# Kept for compatibility; see tests/run_tests.py --help for more options.
+exec python3 "$(dirname "$0")/tests/run_tests.py" --show "$@"
