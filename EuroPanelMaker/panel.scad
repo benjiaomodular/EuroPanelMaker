@@ -256,7 +256,7 @@ module generatePanel() {
             for (idx = [0 : len(circular_holes_mm)]) {
                 if (circular_holes_mm[idx]) {
                     echo("HOLE:", idx = circular_holes_mm[idx]);
-                    generate_circular_holes_mm(circular_holes_mm[idx], circular_holes_mm[idx][0]);
+                    generate_circular_holes(circular_holes_mm[idx], circular_holes_mm[idx][0]);
                 }
             }
             
