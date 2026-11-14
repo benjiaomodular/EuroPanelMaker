@@ -1,0 +1,32 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  visual:
+    # Pinned so that the OpenSCAD, Mesa and ImageMagick versions, and thereby
+    # the rendered images, stay the same. The reference images in
+    # tests/expected/ are rendered in this environment.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install OpenSCAD, ImageMagick and Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            'openscad=2021.01-*' imagemagick xvfb xauth
+          openscad --version
+          compare -version | head -1
+
+      - name: Check test renders
+        run: xvfb-run -a python3 tests/run_tests.py --check
+
+      - name: Upload renders and difference images
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: tests/output/
