@@ -294,19 +294,28 @@ def main():
             if problems:
                 failed.append(name)
 
+    collage_failed = False
     if args.show:
         collage = OUTPUT_DIR / "out.png"
-        pngs = [str(OUTPUT_DIR / f"{t.stem}.png") for t in tests
-                if (OUTPUT_DIR / f"{t.stem}.png").exists()]
+        # Leave out tests that failed to render (OpenSCAD can leave an empty file).
+        pngs = [str(png) for png in (OUTPUT_DIR / f"{t.stem}.png" for t in tests)
+                if png.exists() and png.stat().st_size > 0]
+        collage.unlink(missing_ok=True)
         if pngs:
-            subprocess.run(im("montage") + ["-density", "300", "-tile", "4x0",
-                                            "-geometry", "+5+50"]
-                           + pngs + [str(collage)], check=True)
-            print(f"Collage written to {collage}")
-            if not args.no_open:
-                open_file(collage)
+            proc = subprocess.run(im("montage") + ["-density", "300", "-tile", "4x0",
+                                                   "-geometry", "+5+50"]
+                                  + pngs + [str(collage)])
+            if proc.returncode == 0:
+                print(f"Collage written to {collage}")
+                if not args.no_open:
+                    open_file(collage)
+            else:
+                print("Error: could not make the collage (ImageMagick montage failed)")
+                collage_failed = True
 
     print()
+    if collage_failed and not failed:
+        return 1
     if failed:
         print(f"{len(failed)} of {len(tests)} tests FAILED: {', '.join(failed)}")
         return 1
