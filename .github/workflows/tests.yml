@@ -22,11 +22,11 @@ jobs:
           compare -version | head -1
 
       - name: Check test renders
-        run: xvfb-run -a python3 tests/run_tests.py --check
+        run: xvfb-run -a python3 tests/run_tests.py --check --geometry
 
       - name: Upload renders and difference images
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: test-output
           path: tests/output/
