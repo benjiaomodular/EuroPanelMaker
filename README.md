@@ -170,7 +170,7 @@ python3 tests/run_tests.py --check
 
 A test fails if OpenSCAD reports an error or a warning, or if its image differs from the reference. For each image that differs, a difference image `tests/output/<name>-diff.png` shows the changed pixels in red. GitHub Actions runs this check on every push and pull request, and uploads the renders and difference images when it fails.
 
-The reference images are rendered on GitHub Actions (Ubuntu 24.04, OpenSCAD 2021.01). Other OpenSCAD versions or graphics drivers can give small differences; `--fuzz` and `--max-pixels` adjust the tolerance. If a change to the library is supposed to change the renders, update the reference images with `--update`, check the new images and commit them.
+The reference images are rendered in the same environment as on GitHub Actions (Ubuntu 24.04, OpenSCAD 2021.01). Other OpenSCAD versions or graphics drivers can give small differences; `--fuzz` and `--max-pixels` adjust the tolerance. If a change to the library is supposed to change the renders, update the reference images with `--update`, check the new images and commit them.
 
 Other options:
 - `python3 tests/run_tests.py --check jack` only runs the tests whose name contains `jack`.
